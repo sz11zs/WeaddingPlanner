@@ -1,3 +1,5 @@
 <Solution>
-  <Project Path="WeaddingPlanner/WeaddingPlanner.csproj" />
+  <Project Path="WeaddingPlanner/WeddingPlanner.csproj" />
+  <Project Path="WeddingPlanner.API/WeddingPlanner.API.csproj" Id="1bc026b0-dd61-4884-b473-99e63ced405c" />
+  <Project Path="WeddingPlanner.Tests/WeddingPlanner.Tests.csproj" Id="de254d57-2f34-4ea4-a605-8cdba83c6c1a" />
 </Solution>
