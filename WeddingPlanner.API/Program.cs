@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using WeddingPlanner.API.GraphQL;
 using WeddingPlanner.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,9 +14,17 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContextFactory<AppDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<Query>()
+    .AddMutationType<Mutation>()
+    .AddFiltering()
+    .AddSorting()
+    .RegisterDbContextFactory<AppDbContext>();
 
 var app = builder.Build();
 
@@ -30,5 +39,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapGraphQL();
 
 app.Run();
