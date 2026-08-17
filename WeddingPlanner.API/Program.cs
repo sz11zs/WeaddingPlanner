@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WeddingPlanner.API.GraphQL;
 using WeddingPlanner.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,32 @@ builder.Services
     .AddSorting()
     .RegisterDbContextFactory<AppDbContext>();
 
+// Auth0 autentifikacija
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority =
+            $"https://{builder.Configuration["Auth0:Domain"]}/";
+
+        options.Audience =
+            builder.Configuration["Auth0:Audience"];
+    });
+
+// Autorizacijska pravila - određuju koje dozvole korisnik mora imati
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ReadPartners", policy =>
+        policy.RequireAssertion(context =>
+            context.User.HasClaim(c =>
+                c.Type == "scope" &&
+                c.Value.Split(' ').Contains("read:partners"))));
+
+    options.AddPolicy("WritePartners", policy =>
+        policy.RequireAssertion(context =>
+            context.User.HasClaim(c =>
+                c.Type == "scope" &&
+                c.Value.Split(' ').Contains("write:partners"))));
+});
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -36,6 +63,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -1,8 +1,94 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Novo vjenčanje";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1>Novo vjenčanje</h1>
+
+<form asp-action="Index" method="post">
+
+    <div class="form-group mb-3">
+        <label>Naziv vjenčanja</label>
+        <input type="text" name="name" class="form-control" required />
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Datum</label>
+        <input type="date" name="date" class="form-control" required />
+    </div>
+
+    <hr />
+
+    <div class="form-group mb-3">
+        <label>Restoran / Dvorana</label>
+        <select name="restaurantId"
+                class="form-control"
+                asp-items="ViewBag.Restaurants">
+            <option value="">-- Odaberi restoran / dvoranu --</option>
+        </select>
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Meni</label>
+        <select name="menuId"
+                class="form-control"
+                asp-items="ViewBag.Menus">
+            <option value="">-- Odaberi meni --</option>
+        </select>
+    </div>
+
+    <hr />
+
+    <div class="form-group mb-3">
+        <label>Bend / DJ</label>
+        <select name="bandId"
+                class="form-control"
+                asp-items="ViewBag.Bands">
+            <option value="">-- Odaberi bend / DJ --</option>
+        </select>
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Playlista</label>
+        <select name="playlistId"
+                class="form-control"
+                asp-items="ViewBag.Playlists">
+            <option value="">-- Odaberi playlistu --</option>
+        </select>
+    </div>
+
+    <hr />
+
+    <div class="form-group mb-3">
+        <label>Cvjećar</label>
+        <select name="floristId"
+                class="form-control"
+                asp-items="ViewBag.Florists">
+            <option value="">-- Odaberi cvjećara --</option>
+        </select>
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Aranžman</label>
+        <select name="arrangementId"
+                class="form-control"
+                asp-items="ViewBag.Arrangements">
+            <option value="">-- Odaberi aranžman --</option>
+        </select>
+    </div>
+
+    <hr />
+
+    <div class="form-group mb-3">
+        <label>Slastičarnica</label>
+        <select name="cakeShopId"
+                class="form-control"
+                asp-items="ViewBag.CakeShops">
+            <option value="">-- Odaberi slastičarnicu --</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Dodaj vjenčanje
+    </button>
+
+</form>

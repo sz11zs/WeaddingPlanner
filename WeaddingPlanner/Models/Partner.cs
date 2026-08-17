@@ -20,4 +20,13 @@ public class Partner
 
     [ValidateNever]
     public PartnerCategory Category { get; set; } = null!;
+
+    public ICollection<Playlist> Playlists { get; set; }
+        = new List<Playlist>();
+
+    public ICollection<Arrangement> Arrangements { get; set; }
+        = new List<Arrangement>();
+
+    public ICollection<Menu> Menus { get; set; }
+    = new List<Menu>();
 }

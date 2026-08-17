@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WeddingPlanner.API.Models;
 using WeddingPlanner.Data;
@@ -18,6 +19,8 @@ public class PartnersController : ControllerBase
     }
 
     // GET: api/Partners
+    // Za čitanje partnera potreban je scope read:partners
+    [Authorize(Policy = "ReadPartners")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<PartnerDto>>> GetAll()
     {
@@ -39,6 +42,8 @@ public class PartnersController : ControllerBase
     }
 
     // GET: api/Partners/5
+    // Za čitanje jednog partnera potreban je scope read:partners
+    [Authorize(Policy = "ReadPartners")]
     [HttpGet("{id}")]
     public async Task<ActionResult<Partner>> GetById(int id)
     {
@@ -53,6 +58,8 @@ public class PartnersController : ControllerBase
     }
 
     // POST: api/Partners
+    // Za dodavanje partnera potreban je scope write:partners
+    [Authorize(Policy = "WritePartners")]
     [HttpPost]
     public async Task<ActionResult<Partner>> Create(Partner partner)
     {
@@ -66,6 +73,8 @@ public class PartnersController : ControllerBase
     }
 
     // DELETE: api/Partners/5
+    // Za brisanje partnera potreban je scope write:partners
+    [Authorize(Policy = "WritePartners")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
@@ -81,6 +90,8 @@ public class PartnersController : ControllerBase
     }
 
     // PUT: api/Partners/5
+    // Za uređivanje partnera potreban je scope write:partners
+    [Authorize(Policy = "WritePartners")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, Partner partner)
     {

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WeddingPlanner.Data;
@@ -11,9 +12,11 @@ using WeddingPlanner.Data;
 namespace WeaddingPlanner.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260816162815_AddWeddingTemplates")]
+    partial class AddWeddingTemplates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -186,9 +189,6 @@ namespace WeaddingPlanner.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("PartnerId")
-                        .HasColumnType("integer");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
@@ -196,8 +196,6 @@ namespace WeaddingPlanner.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PartnerId");
 
                     b.HasIndex("WeddingId");
 
@@ -289,17 +287,11 @@ namespace WeaddingPlanner.Migrations
 
             modelBuilder.Entity("WeddingPlanner.Models.WeddingItem", b =>
                 {
-                    b.HasOne("WeddingPlanner.Models.Partner", "Partner")
-                        .WithMany()
-                        .HasForeignKey("PartnerId");
-
                     b.HasOne("WeddingPlanner.Models.Wedding", "Wedding")
                         .WithMany("Items")
                         .HasForeignKey("WeddingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Partner");
 
                     b.Navigation("Wedding");
                 });

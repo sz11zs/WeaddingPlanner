@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WeddingPlanner.Data;
@@ -11,9 +12,11 @@ using WeddingPlanner.Data;
 namespace WeaddingPlanner.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260816160726_AddPlaylists")]
+    partial class AddPlaylists
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,56 +24,6 @@ namespace WeaddingPlanner.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("WeddingPlanner.Models.Arrangement", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("PartnerId")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PartnerId");
-
-                    b.ToTable("Arrangements");
-                });
-
-            modelBuilder.Entity("WeddingPlanner.Models.Menu", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("PartnerId")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PartnerId");
-
-                    b.ToTable("Menus");
-                });
 
             modelBuilder.Entity("WeddingPlanner.Models.Partner", b =>
                 {
@@ -186,9 +139,6 @@ namespace WeaddingPlanner.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("PartnerId")
-                        .HasColumnType("integer");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
@@ -197,72 +147,9 @@ namespace WeaddingPlanner.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PartnerId");
-
                     b.HasIndex("WeddingId");
 
                     b.ToTable("WeddingItems");
-                });
-
-            modelBuilder.Entity("WeddingPlanner.Models.WeddingTemplate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("WeddingTemplates");
-                });
-
-            modelBuilder.Entity("WeddingPlanner.Models.WeddingTemplateItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("WeddingTemplateId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WeddingTemplateId");
-
-                    b.ToTable("WeddingTemplateItems");
-                });
-
-            modelBuilder.Entity("WeddingPlanner.Models.Arrangement", b =>
-                {
-                    b.HasOne("WeddingPlanner.Models.Partner", "Partner")
-                        .WithMany("Arrangements")
-                        .HasForeignKey("PartnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Partner");
-                });
-
-            modelBuilder.Entity("WeddingPlanner.Models.Menu", b =>
-                {
-                    b.HasOne("WeddingPlanner.Models.Partner", "Partner")
-                        .WithMany("Menus")
-                        .HasForeignKey("PartnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Partner");
                 });
 
             modelBuilder.Entity("WeddingPlanner.Models.Partner", b =>
@@ -289,38 +176,17 @@ namespace WeaddingPlanner.Migrations
 
             modelBuilder.Entity("WeddingPlanner.Models.WeddingItem", b =>
                 {
-                    b.HasOne("WeddingPlanner.Models.Partner", "Partner")
-                        .WithMany()
-                        .HasForeignKey("PartnerId");
-
                     b.HasOne("WeddingPlanner.Models.Wedding", "Wedding")
                         .WithMany("Items")
                         .HasForeignKey("WeddingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Partner");
-
                     b.Navigation("Wedding");
-                });
-
-            modelBuilder.Entity("WeddingPlanner.Models.WeddingTemplateItem", b =>
-                {
-                    b.HasOne("WeddingPlanner.Models.WeddingTemplate", "WeddingTemplate")
-                        .WithMany("Items")
-                        .HasForeignKey("WeddingTemplateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("WeddingTemplate");
                 });
 
             modelBuilder.Entity("WeddingPlanner.Models.Partner", b =>
                 {
-                    b.Navigation("Arrangements");
-
-                    b.Navigation("Menus");
-
                     b.Navigation("Playlists");
                 });
 
@@ -330,11 +196,6 @@ namespace WeaddingPlanner.Migrations
                 });
 
             modelBuilder.Entity("WeddingPlanner.Models.Wedding", b =>
-                {
-                    b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("WeddingPlanner.Models.WeddingTemplate", b =>
                 {
                     b.Navigation("Items");
                 });

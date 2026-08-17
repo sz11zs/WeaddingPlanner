@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using WeddingPlanner.Data;
+using QuestPDF.Infrastructure;
+
+QuestPDF.Settings.License = LicenseType.Community;
 
 var builder = WebApplication.CreateBuilder(args);
 
